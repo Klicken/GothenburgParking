@@ -1,0 +1,2 @@
+class PrivateParking < ApplicationRecord
+end

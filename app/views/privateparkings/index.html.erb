@@ -1,0 +1,9 @@
+<h1>All PrivateParkings</h1>
+
+<ul id="privateparkings">
+  <% @privateparkings.each do |privateparking| %>
+    <li>
+      <%= privateparking.name %>
+    </li>
+  <% end %>
+</ul>
