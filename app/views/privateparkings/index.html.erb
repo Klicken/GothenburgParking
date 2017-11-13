@@ -21,7 +21,7 @@
   }
   td{
     padding: 6px 12px;
-    font-size: 20px;
+    font-size: 18px;
   }
   th{
     text-shadow: 1px 1px 1px #000000;
@@ -29,6 +29,12 @@
     padding: 6px 12px;
     color: #ffffff;
     background: #EF6358;
+  }
+  tbody tr{
+    height: 8vh;
+  }
+  tr:hover{
+    background: #e6e6e6;
   }
   #header{
     height: 10vh;
@@ -63,6 +69,10 @@
     font-size: 20px;
     padding: 10px;
   }
+  tr.clicked{
+    background: #e6e6e6;
+    font-weight: bold;
+  }
 </style>
 <div id="header">
   <div class="header_child"><img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png">> 15kr/tim</div>
@@ -86,6 +96,7 @@
       marker = new google.maps.Marker({
         position: new google.maps.LatLng(<%=privateparking.lat%>, <%=privateparking.long%>),
         map: map,
+        icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
         <% if (privateparking.currentparkingcost.to_i > 15) %>
           icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
         <% elsif (privateparking.currentparkingcost.to_i > 10) %>
@@ -96,7 +107,23 @@
           icon: 'http://maps.google.com/mapfiles/ms/icons/orange-dot.png'
         <% end %>
       });
+      marker.addListener('click', function() {
+        console.log("<%=privateparking.name%>");
+      });
     <% end %>
+
+  }
+  function rowclick(element){
+    if (element.classList.contains("clicked")) {
+      element.classList.remove("clicked");
+    }
+    else {
+      var test = document.getElementsByClassName("clicked");
+      if (test.length > 0) {
+        test[0].classList.remove("clicked");
+      }
+      element.classList.add("clicked");
+    }
   }
 </script>
 <div id="table_container">
@@ -111,8 +138,8 @@
     <thead>
     <tbody>
       <% @privateparkings.each do |privateparking| %>
-      <tr>
-        <td><%= privateparking.name %></td>
+      <tr onclick="rowclick(this)">
+        <td id="parking_name"><%= privateparking.name %></td>
         <% if (privateparking.parkingspaces.to_i == 0) %>
           <td>?</td>
         <% else %>
