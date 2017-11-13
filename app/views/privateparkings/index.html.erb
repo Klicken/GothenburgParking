@@ -25,16 +25,33 @@
     color: #ffffff;
     background: #EF6358;
   }
+  #header{
+    height: 10vh;
+    width: 100%;
+    background: #fdfdfd;
+    display: flex;
+    align-items: center;
+  }
   #map{
     width: 60%;
-    height: 100vh;
+    height: 90vh;
     float: right;
   }
   #table_container{
-    height: 100vh;
+    height: 90vh;
     overflow-y: auto;
   }
+  .header_child{
+    display: inline;
+    margin: auto;
+  }
 </style>
+<div id="header">
+  <div class="header_child"><img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png">> 15</div>
+  <div class="header_child"><img src="http://maps.google.com/mapfiles/ms/icons/yellow-dot.png">> 10</div>
+  <div class="header_child"><img src="http://maps.google.com/mapfiles/ms/icons/green-dot.png">> 5</div>
+  <div class="header_child"><img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png">> idkdude</div>
+</div>
 <div id="map"></div>
 <script async defer
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9w5qw77rOY6j6aa_f9q_65fvEB7c-9JI&callback=initMap">
@@ -49,7 +66,14 @@
     <% @privateparkings.each do |privateparking| %>
       marker = new google.maps.Marker({
         position: new google.maps.LatLng(<%=privateparking.lat%>, <%=privateparking.long%>),
-        map: map
+        map: map,
+        <% if (privateparking.currentparkingcost.to_i > 15) %>
+          icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+        <% elsif (privateparking.currentparkingcost.to_i > 10) %>
+          icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png'
+        <% elsif (privateparking.currentparkingcost.to_i > 5) %>
+          icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+        <% end %>
       });
     <% end %>
   }
