@@ -8,9 +8,13 @@
   table{
     text-align: left;
     border-spacing: 0;
+    border-collapse:collapse;
+    table-layout: fixed;
+    width: 40vw;
   }
   tr{
     height: 10vh;
+    border-bottom: 1px solid #e6e6e6;
   }
   tr:nth-child(even){
     background: #f6f6f6;
@@ -20,6 +24,7 @@
     font-size: 20px;
   }
   th{
+    text-shadow: 1px 1px 1px #000000;
     font-size: 30px;
     padding: 6px 12px;
     color: #ffffff;
@@ -27,30 +32,44 @@
   }
   #header{
     height: 10vh;
-    width: 100%;
-    background: #fdfdfd;
+    width: 60%;
+    background: #f6f6f6;
     display: flex;
     align-items: center;
+    margin-left: auto;
+    position: fixed;
+    top: 0;
+    right: 0;
   }
   #map{
     width: 60%;
     height: 90vh;
-    float: right;
+    position: fixed;
+    margin-left: auto;
+    top: 10vh;
+    right: 0;
+    bottom: 0;
   }
   #table_container{
-    height: 90vh;
+    height: 100vh;
     overflow-y: auto;
+    position: fixed;
+    top: 0;
   }
   .header_child{
     display: inline;
     margin: auto;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 10px;
   }
 </style>
 <div id="header">
-  <div class="header_child"><img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png">> 15</div>
-  <div class="header_child"><img src="http://maps.google.com/mapfiles/ms/icons/yellow-dot.png">> 10</div>
-  <div class="header_child"><img src="http://maps.google.com/mapfiles/ms/icons/green-dot.png">> 5</div>
-  <div class="header_child"><img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png">> idkdude</div>
+  <div class="header_child"><img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png">> 15kr/tim</div>
+  <div class="header_child"><img src="http://maps.google.com/mapfiles/ms/icons/yellow-dot.png">> 10kr/tim</div>
+  <div class="header_child"><img src="http://maps.google.com/mapfiles/ms/icons/green-dot.png">> 5kr/tim</div>
+  <div class="header_child"><img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png">> 0kr/tim</div>
+  <div class="header_child"><img src="http://maps.google.com/mapfiles/ms/icons/orange-dot.png"> Unknown</div>
 </div>
 <div id="map"></div>
 <script async defer
@@ -73,6 +92,8 @@
           icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png'
         <% elsif (privateparking.currentparkingcost.to_i > 5) %>
           icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+        <% elsif (privateparking.currentparkingcost.to_i == 0) %>
+          icon: 'http://maps.google.com/mapfiles/ms/icons/orange-dot.png'
         <% end %>
       });
     <% end %>
@@ -83,7 +104,7 @@
     <thead>
       <tr>
         <th>Name</th>
-        <th>Slots</th>
+        <th style="width: 5vw;">Slots</th>
         <th>Parkingcost</th>
         <th>Current Cost</th>
       </tr>
@@ -92,9 +113,21 @@
       <% @privateparkings.each do |privateparking| %>
       <tr>
         <td><%= privateparking.name %></td>
-        <td><%= privateparking.parkingspaces %></td>
-        <td><%= privateparking.parkingcost %></td>
-        <td><%= privateparking.currentparkingcost %></td>
+        <% if (privateparking.parkingspaces.to_i == 0) %>
+          <td>?</td>
+        <% else %>
+          <td><%= privateparking.parkingspaces %></td>
+        <% end %>
+        <% if (privateparking.parkingcost.to_i == 0) %>
+          <td>?</td>
+        <% else %>
+          <td><%= privateparking.parkingcost %></td>
+        <% end %>
+        <% if (privateparking.currentparkingcost.to_i == 0) %>
+          <td style="text-align: center;">?</td>
+        <% else %>
+          <td style="text-align: center;"><%= privateparking.currentparkingcost %></td>
+        <% end %>
       </tr>
       <% end %>
     </tbody>
