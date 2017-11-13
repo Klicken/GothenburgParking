@@ -1,58 +1,78 @@
 <style>
   body{
     font-family: Calibri,sans-serif;
-    background-color: #eaf8fc;
+    margin: 0px;
+    color: #3b3b3b;
+    background: #fdfdfd;
   }
-  #map {
-    width: 100%;
-    height: 400px;
-    background-color: grey;
+  table{
+    text-align: left;
+    border-spacing: 0;
   }
-  #table_head{
-    font-size: 30px;
-    border: 25px solid green;
+  tr{
+    height: 10vh;
   }
-  .table{
+  tr:nth-child(even){
+    background: #f6f6f6;
+  }
+  td{
+    padding: 6px 12px;
     font-size: 20px;
-    margin: auto;
+  }
+  th{
+    font-size: 30px;
+    padding: 6px 12px;
+    color: #ffffff;
+    background: #EF6358;
+  }
+  #map{
+    width: 60%;
+    height: 100vh;
+    float: right;
+  }
+  #table_container{
+    height: 100vh;
+    overflow-y: auto;
   }
 </style>
 <div id="map"></div>
-<script>
-  function initMap() {
-    var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 12,
-    center: new google.maps.LatLng(57.708870,11.974560)
-    });
-  }
-</script>
 <script async defer
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9w5qw77rOY6j6aa_f9q_65fvEB7c-9JI&callback=initMap">
 </script>
-
-<table class="table">
-  <tr id="table_head">
-    <th>Name</th>
-    <th>Parkingspaces</th>
-    <th>Parkingcost</th>
-    <th>Current Parkingcost</th>
-  </tr>
-  <% @privateparkings.each do |privateparking| %>
-  <tr>
-    <th><%= privateparking.name %></th>
-    <th><%= privateparking.parkingspaces %></th>
-    <th><%= privateparking.parkingcost %></th>
-    <th><%= privateparking.currentparkingcost %></th>
-  </tr>
-  <% end %>
-</table>
-
-<!--
-<ul id="privateparkings">
-  <% @privateparkings.each do |privateparking| %>
-    <li>
-      <%= privateparking.name %>
-    </li>
-  <% end %>
-</ul>
--->
+<script>
+  function initMap() {
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 12,
+      center: new google.maps.LatLng(57.708870,11.974560)
+    });
+    var marker;
+    <% @privateparkings.each do |privateparking| %>
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(<%=privateparking.lat%>, <%=privateparking.long%>),
+        map: map
+      });
+    <% end %>
+  }
+</script>
+<div id="table_container">
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Slots</th>
+        <th>Parkingcost</th>
+        <th>Current Cost</th>
+      </tr>
+    <thead>
+    <tbody>
+      <% @privateparkings.each do |privateparking| %>
+      <tr>
+        <td><%= privateparking.name %></td>
+        <td><%= privateparking.parkingspaces %></td>
+        <td><%= privateparking.parkingcost %></td>
+        <td><%= privateparking.currentparkingcost %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
